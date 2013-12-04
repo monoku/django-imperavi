@@ -66,8 +66,9 @@ def upload_file(request, upload_path=None, upload_link=None):
         image_path = default_storage.save(path, uploaded_file)
 
         #seteamos permisos
-        os.chmod(path, stat.S_IRUSR | stat.S_IRGRP | stat.S_IROTH)
-
+        p = os.sep.join(os.path.abspath(path).split(os.sep))
+        print 'lolololololololololololololololololololololololololololololololo'
+        os.chmod(p, stat.S_IRUSR | stat.S_IRGRP | stat.S_IROTH)
         image_url = default_storage.url(image_path)
         if upload_link:
             return HttpResponse(image_url)
