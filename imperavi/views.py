@@ -53,7 +53,6 @@ def uploaded_images_json(request, upload_path=None):
 
 
 import os
-import stat
 
 @require_POST
 @csrf_exempt
@@ -65,10 +64,8 @@ def upload_file(request, upload_path=None, upload_link=None):
         path = os.path.join(upload_path or UPLOAD_PATH, uploaded_file.name)
         image_path = default_storage.save(path, uploaded_file)
 
-        #seteamos permisos
-        p = os.sep.join(os.path.abspath(path).split(os.sep))
-        print 'lolololololololololololololololololololololololololololololololo'
-        os.chmod(p, stat.S_IRUSR | stat.S_IRGRP | stat.S_IROTH)
+        os.chmod(os.path.join(settings.MEDIA_ROOT, path), 0755)
+
         image_url = default_storage.url(image_path)
         if upload_link:
             return HttpResponse(image_url)
