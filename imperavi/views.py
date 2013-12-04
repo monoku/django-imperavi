@@ -64,7 +64,10 @@ def upload_file(request, upload_path=None, upload_link=None):
         uploaded_file = form.cleaned_data['file']
         path = os.path.join(upload_path or UPLOAD_PATH, uploaded_file.name)
         image_path = default_storage.save(path, uploaded_file)
-        os.chmod(image_path, stat.S_IRUSR | stat.S_IRGRP | stat.S_IROTH)
+
+        #seteamos permisos
+        os.chmod(path, stat.S_IRUSR | stat.S_IRGRP | stat.S_IROTH)
+
         image_url = default_storage.url(image_path)
         if upload_link:
             return HttpResponse(image_url)
